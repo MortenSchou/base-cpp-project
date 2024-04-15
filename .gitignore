@@ -10,10 +10,12 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 
-cmake-build-debug/
-
-cmake-build-release/
-
-build/
-
 .idea/
+
+venv/
+__pycache__/
+
+cmake-build-debug/
+cmake-build-release/
+build/
+pybuild/

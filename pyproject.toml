@@ -1,0 +1,54 @@
+[build-system]
+requires = ["scikit-build-core>=0.8.2", "pybind11"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "pybind_example"
+version = "0.0.1"
+description="A minimal example package (with pybind11)"
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+
+[tool.scikit-build]
+cmake.define = {"MYPROJECT_PYTHON_BUILD"="ON", "MYPROJECT_BUILD_TESTS"="OFF"}
+wheel.expand-macos-universal-tags = true
+build-dir = "pybuild"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
+xfail_strict = true
+log_cli_level = "INFO"
+filterwarnings = [
+    "error",
+]
+testpaths = ["tests"]
+
+
+[tool.cibuildwheel]
+test-command = "pytest {project}/python/tests"
+test-extras = ["test"]
+test-skip = ["*universal2:arm64"]
+build-verbosity = 1
+manylinux-x86_64-image = "manylinux_2_28"
+manylinux-i686-image = "manylinux_2_28"
+manylinux-aarch64-image = "manylinux_2_28"
+manylinux-ppc64le-image = "manylinux_2_28"
+manylinux-s390x-image = "manylinux_2_28"
+manylinux-pypy_x86_64-image = "manylinux_2_28"
+manylinux-pypy_i686-image = "manylinux_2_28"
+manylinux-pypy_aarch64-image = "manylinux_2_28"
