@@ -43,6 +43,5 @@ endif()
 
 # Enable testing when requested by the user
 if (MYPROJECT_BUILD_TESTS)
-    enable_testing()
     add_subdirectory(tests)
 endif ()
