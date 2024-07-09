@@ -2,6 +2,9 @@
 
 #include <future>
 #include <queue>
+#include <thread>
+#include <chrono>
+#include <algorithm>
 
 #include <cxxopts.hpp>
 #include <coro/coro.hpp>
@@ -82,6 +85,17 @@ int main(int argc, char *argv[]) {
     std::cout << json(cards).dump() << std::endl;
     std::ranges::sort(cards);
     std::cout << json(cards).dump() << std::endl;
+
+    auto job = [](){
+        std::mt19937 gen{std::random_device{}()};
+        std::uniform_int_distribution<> distrib(100, 6000);
+        auto sleep_duration = std::chrono::milliseconds(distrib(gen));
+        std::this_thread::sleep_for(sleep_duration);
+        std::cout << sleep_duration << std::endl;  // Possibly not good to write to std::cout from different threads... (just testing it out here)
+        return 42;
+    };
+    auto sum = std::ranges::fold_left(parallel(job, 10), 0, std::plus<>());
+    std::cout << "sum: " << sum << std::endl;
 
     if(pegtl::analyze<grammar>() != 0) {
         std::cerr << "cycles without progress detected!\n";
